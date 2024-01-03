@@ -1,0 +1,95 @@
+html, header {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f9fbfd;
+    line-height: normal;
+}
+        
+h1, h2 {
+    font-weight: bold;
+    display: block;            
+} 
+
+h1 {
+    font-size: 2em;
+    margin: 0.5em .67em 0.5em .67em;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 0.75em .83em 0.75em .83em;
+} 
+
+.center-containers {
+    display: flex;
+    justify-content: center;
+}
+
+.center-text {
+    text-align: center;
+}
+
+body {
+    margin: 12.5% 25% auto 25%;
+    padding: 0;
+    background-color: white;            
+}
+
+#content_container {
+    padding: 2%;
+    margin: 0;
+    border: 1px solid grey;
+    border-radius: 5px;
+    box-shadow: 0 0 2px grey;
+}
+
+#btn_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#password_textarea {
+    font-family: "Lucida Console", Monaco, monospace;
+    box-sizing: border-box;
+    margin: 0;
+    width: 100%;
+    border: 1px dashed #c0c7cf;
+    border-radius: 5px;
+
+    resize: none;
+
+    text-align: center;
+    outline: none;
+}
+
+#generate_btn, #copy_btn {
+    background-color: #af0808;
+    border: 1px solid #af0808;
+
+    font-size: 1.33em;
+    justify-content: left;
+    color: white;
+    padding: 0.5em 1.0em 0.5em 1.0em;
+    border-radius: 1em;
+    outline: none;
+}
+
+.button_disabled {
+    background-color: #c0c7cf !important;
+    border: 1px solid #c0c7cf !important;
+}
+
+@media only screen and (max-width: 575px) {
+    html {
+        min-width: 329px;
+    }
+
+    #btn_container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #password_header {
+        text-align: center;
+    }
+}
