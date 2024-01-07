@@ -17,14 +17,14 @@ export class AppComponent {
   static get lowercase() { return "abcdefghijklmnopqrstuvwxyz" };
   static get uppercase() { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ" };
   static get special() { return " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~" };
-  generateButton : HTMLElement | null = null;
-  copyButton : HTMLElement | null = null;
+  generateButton: HTMLElement | null = null;
+  copyButton: HTMLElement | null = null;
   passwordTextArea: HTMLTextAreaElement | null = null;
 
   ngAfterViewInit() {
     this.generateButton = document.getElementById("generate_btn");
     this.copyButton = document.getElementById("copy_btn");
-    this.passwordTextArea = document.getElementById("password_textarea") as HTMLTextAreaElement;  
+    this.passwordTextArea = document.getElementById("password_textarea") as HTMLTextAreaElement;
   }
 
   /**
@@ -35,23 +35,23 @@ export class AppComponent {
    * @param {number} index of second element for swapping
    */
 
-  swap(array: string[], indexOne: number, indexTwo: number) {
-    if (
-      (indexOne >= 0 && indexOne < array.length) &&
-      (indexTwo >= 0 && indexTwo < array.length)
-    ) {
-      /* one line solution but looks like it may require more work under the hood unless the interpreter is clever
-      https://medium.com/better-programming/how-swap-two-values-without-temporary-variables-using-javascript-8bb28f96b5f6
-      
-      array[indexOne] = [ array[indexTwo], array[indexTwo] = array[indexOne] ][0];
-      */
-      const temp = array[indexOne];
-      array[indexOne] = array[indexTwo];
-      array[indexTwo] = temp;
-    }
-    else {
-      throw new Error('Invalid index used in swap()');
-    }
+  swap(array: any[], indexOne: number, indexTwo: number) {
+    // translate index if negative/positive and/or out of range to positive valid index
+    const translateIndex = (i: number) => i < 0 ? -(-(i+1) % array.length) + array.length -1 : i % array.length;
+
+    indexOne = translateIndex(indexOne);
+    indexTwo = translateIndex(indexTwo);
+
+    /* one line solution but looks like it may require more work under the hood unless the interpreter is clever
+    https://medium.com/better-programming/how-swap-two-values-without-temporary-variables-using-javascript-8bb28f96b5f6
+    
+    array[indexOne] = [ array[indexTwo], array[indexTwo] = array[indexOne] ][0];
+    */
+
+    // swap
+    const temp = array[indexOne];
+    array[indexOne] = array[indexTwo];
+    array[indexTwo] = temp;
   }
 
   /**
@@ -60,26 +60,9 @@ export class AppComponent {
    * @param {string[]} charClasses array of character class strings
    * @return {string} random character
    */
-  getRandomCharacterFromAllSets(charClasses: string[]): string {
-
-    /* find number of all characters  */
-    let numCharacters = 0;
-    for (let charClass of charClasses) {
-      numCharacters += charClass.length;
-    }
-
-    let index = Math.floor(Math.random() * numCharacters);
-
-    for (let charClass of charClasses) {
-      if (index >= charClass.length) {
-        /* adjust to find the actual index into the charClass */
-        index -= charClass.length;
-      }
-      else {
-        return charClass[index];
-      }
-    }
-    throw Error('random index into class set is greater than sum of all characters present!');
+  getRandomFromList(list: string | any[]): string {
+    const index = Math.floor(Math.random() * list.length);
+    return list[index];
   }
 
   /**
@@ -113,7 +96,7 @@ export class AppComponent {
          * Remaining characters should be selected with equal probability from
          * all characters available.
          */
-        password.push(this.getRandomCharacterFromAllSets(charClasses));
+        password.push(this.getRandomFromList(charClasses.join()));
       }
     }
 
@@ -127,7 +110,6 @@ export class AppComponent {
   }
 
   generate() {
-    console.log("generate()")
     let numChars = 0;
     do {
       numChars = parseInt(prompt("Enter length: ", "8") || "8");
@@ -165,7 +147,7 @@ export class AppComponent {
     let password = this.generatePassword(numChars, charClasses);
     console.log(password, this.passwordTextArea);
     /** document.getElementById("password").textAreaElement. */
-    
+
     if (this.passwordTextArea) {
       this.passwordTextArea.value = password;
       this.passwordTextArea.style.textAlign = "left";
@@ -173,10 +155,8 @@ export class AppComponent {
       this.passwordTextArea.style.wordBreak = "break-all";
     }
 
-    if (this.copyButton) {
-      /* enable copy and paste */
-      this.copyButton.classList.remove("button_disabled");
-    }
+    /* enable copy and paste */
+    this.copyButton?.classList.remove("button_disabled");
   }
 
   copy() {
